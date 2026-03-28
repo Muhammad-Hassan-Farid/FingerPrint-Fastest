@@ -51,9 +51,9 @@ sudo apt-get install libopencv-dev libopenblas-dev
 
 ---
 
-## Build Instructions
+## Quick Start (All-in-One)
 
-### Method 1: Quick Build Script (Recommended)
+### Build Everything (C++ Only)
 
 **macOS/Linux:**
 ```bash
@@ -65,6 +65,65 @@ chmod +x build.sh
 ```cmd
 build.bat
 ```
+
+This will compile:
+1. `fingerprint_app` - Evaluation engine
+2. `visualize_metrics` - ASCII visualization
+3. `biometric_gui` - Qt5 GUI application
+
+---
+
+## Launch Applications
+
+### Command-Line Interface (CLI)
+
+**Run Evaluation:**
+```bash
+./fingerprint_app
+```
+
+**View ASCII Plots:**
+```bash
+./visualize_metrics
+```
+
+**Export Results:**
+CSV files are automatically generated in the current directory.
+
+### Graphical User Interface (GUI)
+
+**Launch Qt5 GUI:**
+```bash
+./biometric_gui
+```
+
+Features:
+- ▶ Run Evaluation button
+- 💾 Export Results button
+- 📋 Metrics tab (real-time results)
+- ℹ️ About tab (quick reference)
+
+**For detailed GUI instructions, see [GUI_CPP.md](GUI_CPP.md)**
+
+---
+
+## Build Requirements
+
+### macOS
+```bash
+brew install opencv qt5 cmake
+```
+
+### Linux (Ubuntu/Debian)
+```bash
+sudo apt-get install libopencv-dev qtbase5-dev cmake
+```
+
+### Windows
+- Visual Studio 2019+ with C++ tools
+- OpenCV (download from opencv.org)
+- Qt5 (download from qt.io)
+- CMake
 
 ### Method 2: Manual Compilation
 
@@ -90,7 +149,41 @@ g++ -std=c++17 -O2 -o visualize_metrics visualize_metrics.cpp
 
 ---
 
-## Usage
+## GUI Application (C++ - Qt5)
+
+A professional Qt5 C++ GUI for easy evaluation and visualization.
+
+### Launch GUI
+
+```bash
+./biometric_gui
+```
+
+### GUI Features
+
+✅ **Easy Execution**
+- Click "▶ Run Evaluation" button
+- Real-time output monitoring
+- Non-blocking execution
+
+✅ **Result Display**
+- 📋 Metrics tab - Full evaluation report
+- ℹ️ About tab - Quick reference and instructions
+
+✅ **CSV Export**
+- "💾 Export Results" button
+- Choose destination folder
+- All files copied automatically
+
+### GUI Requirements
+
+- **Qt5** (already installed via build script)
+- **CMake 3.10+**
+- **C++17 compiler** (clang++, g++, MSVC)
+
+**For detailed GUI instructions, see [GUI_CPP.md](GUI_CPP.md)**
+
+---
 
 ### Step 1: Generate Evaluation Results
 ```bash

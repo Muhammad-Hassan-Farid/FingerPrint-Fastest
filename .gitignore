@@ -1,0 +1,37 @@
+# Build artifacts
+fingerprint_app
+fingerprint_app.exe
+visualize_metrics
+visualize_metrics.exe
+*.o
+*.obj
+
+# Output files
+*.csv
+*.txt
+roc_curve.csv
+score_distributions.csv
+rank_distribution.csv
+tar_at_far.csv
+evaluation_metrics.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build directories
+build/
+dist/
+.cmake/
+
+# Compiled binaries
+*.a
+*.so
+*.lib
+*.dll
