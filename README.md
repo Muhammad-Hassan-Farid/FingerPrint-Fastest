@@ -1,59 +1,62 @@
-# Fingerprint Biometric Evaluation Framework (C++)
+# Fingerprint Biometric Evaluation Framework
 
-A comprehensive C++ implementation for fingerprint biometric evaluation with standard authentication and identification metrics.
+A **100% C++** implementation for fingerprint biometric evaluation with comprehensive authentication and identification metrics.
 
 ## Features
 
-✅ **Identification Metrics**
+### Identification Metrics
 - Rank-1, Rank-5, Rank-10 accuracy
 - Mean rank position
 
-✅ **Authentication Metrics**
+### Authentication Metrics  
 - Equal Error Rate (EER)
 - False Acceptance Rate (FAR) & False Rejection Rate (FRR)
 - Area Under ROC Curve (AUC)
 - TAR @ FAR operating points
 
-✅ **Score Analysis**
+### Analysis & Export
 - Genuine vs Impostor score distributions
 - Statistical analysis (mean, std dev, separation)
+- CSV export for visualization
+- Detailed metrics reports
 
-✅ **Visualization**
-- ASCII terminal plots
-- CSV data export for external tools
-- Detailed metrics report
-
-✅ **Fast Computation**
-- Optimized ROC curve generation
-- Threshold sampling for large datasets
-- Synthetic data generation for testing
+### Interfaces
+- **CLI** - Command-line evaluation engine
+- **Visualization** - ASCII terminal plots  
+- **GUI** - Qt5 graphical interface
 
 ---
 
-## Build Requirements
+## System Requirements
 
-### macOS (Homebrew)
+### macOS
 ```bash
-# Install dependencies
-brew install opencv openblas
-
-# Note: OpenAFIS library needs to be compiled separately (optional)
+# Install dependencies via Homebrew
+brew install opencv qt5 cmake pkg-config
 ```
 
 ### Linux (Ubuntu/Debian)
 ```bash
-sudo apt-get install libopencv-dev libopenblas-dev
+# Install dependencies via apt
+sudo apt-get install libopencv-dev qtbase5-dev cmake pkg-config
 ```
 
-### Windows (MSVC / MinGW)
-- Download OpenCV from: https://opencv.org/releases/
-- Install Visual Studio 2019 or later
+### Windows
+- Visual Studio 2019+ (with C++ tools)
+- OpenCV (https://opencv.org/releases/)
+- Qt5 (https://www.qt.io/download)
+- CMake (https://cmake.org/)
 
 ---
 
-## Quick Start (All-in-One)
+## Installation
 
-### Build Everything (C++ Only)
+### 1. Clone/Download the Project
+```bash
+cd fingerprint-biometric-evaluation
+```
+
+### 2. Build All Components
 
 **macOS/Linux:**
 ```bash
@@ -61,180 +64,93 @@ chmod +x build.sh
 ./build.sh
 ```
 
-**Windows (CMD):**
+**Windows (Command Prompt):**
 ```cmd
 build.bat
 ```
 
-This will compile:
-1. `fingerprint_app` - Evaluation engine
-2. `visualize_metrics` - ASCII visualization
-3. `biometric_gui` - Qt5 GUI application
+### Build Output
+
+The build script creates three executables:
+
+| Executable | Purpose |
+|-----------|---------|
+| `fingerprint_app` | Core evaluation engine |
+| `visualize_metrics` | ASCII visualization utility |
+| `biometric_gui` | Qt5 graphical interface |
 
 ---
 
-## Launch Applications
+## Usage
 
-### Command-Line Interface (CLI)
+### Option 1: Command-Line Interface (CLI)
 
-**Run Evaluation:**
+**Run evaluation:**
 ```bash
 ./fingerprint_app
 ```
 
-**View ASCII Plots:**
+Generates 5 output files in the current directory:
+- `roc_curve.csv` - ROC curve data points
+- `score_distributions.csv` - Genuine/impostor scores
+- `rank_distribution.csv` - Rank histogram
+- `tar_at_far.csv` - Operating points
+- `evaluation_metrics.txt` - Detailed metrics report
+
+**View ASCII visualization:**
 ```bash
 ./visualize_metrics
 ```
 
-**Export Results:**
-CSV files are automatically generated in the current directory.
+Displays terminal plots of:
+- ROC curve
+- Score distributions
+- Rank distribution
+- Summary statistics
 
-### Graphical User Interface (GUI)
+### Option 2: Graphical User Interface (GUI)
 
-**Launch Qt5 GUI:**
+**Launch the Qt5 GUI:**
 ```bash
 ./biometric_gui
 ```
 
-Features:
-- ▶ Run Evaluation button
-- 💾 Export Results button
-- 📋 Metrics tab (real-time results)
-- ℹ️ About tab (quick reference)
+**GUI Features:**
+- ▶ **Run Evaluation** - Execute analysis with one click
+- 💾 **Export Results** - Save CSV files to selected folder
+- 📋 **Metrics Tab** - View full evaluation report
+- ℹ️ **About Tab** - Quick reference guide
 
-**For detailed GUI instructions, see [GUI_CPP.md](GUI_CPP.md)**
+For detailed GUI documentation, see [GUI_CPP.md](GUI_CPP.md).
 
 ---
 
-## Build Requirements
+## Building from Source (Manual)
 
 ### macOS
 ```bash
-brew install opencv qt5 cmake
-```
-
-### Linux (Ubuntu/Debian)
-```bash
-sudo apt-get install libopencv-dev qtbase5-dev cmake
-```
-
-### Windows
-- Visual Studio 2019+ with C++ tools
-- OpenCV (download from opencv.org)
-- Qt5 (download from qt.io)
-- CMake
-
-### Method 2: Manual Compilation
-
-**macOS (with Homebrew OpenCV):**
-```bash
 clang++ -std=c++17 -O2 -o fingerprint_app main.cpp \
-  -I/opt/homebrew/opt/opencv/include/opencv4 \
-  -L/opt/homebrew/opt/opencv/lib \
-  -lopencv_core -lopencv_imgproc -lopencv_highgui \
-  -lopencv_imgcodecs -lopencv_features2d -lopencv_flann -lm
-```
+  $(pkg-config --cflags --libs opencv4) -lm
 
-**Visualization Utility:**
-```bash
 clang++ -std=c++17 -O2 -o visualize_metrics visualize_metrics.cpp
 ```
 
-**Linux:**
+### Linux
 ```bash
-g++ -std=c++17 -O2 -o fingerprint_app main.cpp `pkg-config --cflags --libs opencv4`
+g++ -std=c++17 -O2 -o fingerprint_app main.cpp \
+  $(pkg-config --cflags --libs opencv4) -lm
+
 g++ -std=c++17 -O2 -o visualize_metrics visualize_metrics.cpp
 ```
 
----
-
-## GUI Application (C++ - Qt5)
-
-A professional Qt5 C++ GUI for easy evaluation and visualization.
-
-### Launch GUI
-
+### GUI (CMake)
 ```bash
-./biometric_gui
-```
-
-### GUI Features
-
-✅ **Easy Execution**
-- Click "▶ Run Evaluation" button
-- Real-time output monitoring
-- Non-blocking execution
-
-✅ **Result Display**
-- 📋 Metrics tab - Full evaluation report
-- ℹ️ About tab - Quick reference and instructions
-
-✅ **CSV Export**
-- "💾 Export Results" button
-- Choose destination folder
-- All files copied automatically
-
-### GUI Requirements
-
-- **Qt5** (already installed via build script)
-- **CMake 3.10+**
-- **C++17 compiler** (clang++, g++, MSVC)
-
-**For detailed GUI instructions, see [GUI_CPP.md](GUI_CPP.md)**
-
----
-
-### Step 1: Generate Evaluation Results
-```bash
-./fingerprint_app
-```
-
-**Output:**
-- Prints comprehensive biometric metrics to console
-- Generates 5 CSV files for visualization:
-  - `roc_curve.csv` - ROC curve points
-  - `score_distributions.csv` - Similarity scores
-  - `rank_distribution.csv` - Rank histogram
-  - `tar_at_far.csv` - Operating points
-  - `evaluation_metrics.txt` - Detailed report
-
-### Step 2: Visualize Results (ASCII Terminal)
-```bash
-./visualize_metrics
-```
-
-**Output:**
-- ASCII ROC curve plot
-- Rank distribution bar chart
-- Score distribution histograms
-- Complete metrics summary
-
-### Step 3: Advanced Visualization (Optional)
-
-Export CSV files to external tools:
-
-**Python (matplotlib):**
-```python
-import pandas as pd
-import matplotlib.pyplot as plt
-
-roc = pd.read_csv('roc_curve.csv')
-plt.plot(roc['FPR']*100, roc['TPR']*100)
-plt.xlabel('FAR (%)')
-plt.ylabel('TAR (%)')
-plt.title('ROC Curve')
-plt.savefig('roc_curve.png')
-plt.show()
-```
-
-**Excel/LibreOffice:**
-- Open any `.csv` file directly
-
-**gnuplot:**
-```bash
-gnuplot
-gnuplot> plot "roc_curve.csv" using 1:2 with lines
+mkdir build
+cd build
+cmake ..
+make
+cd ..
+cp build/biometric_gui .
 ```
 
 ---
@@ -243,173 +159,158 @@ gnuplot> plot "roc_curve.csv" using 1:2 with lines
 
 ```
 fingerprint-biometric-evaluation/
-├── main.cpp                          # Evaluation engine
-├── visualize_metrics.cpp             # Visualization utility
-├── README.md                         # This file
-├── build.sh                          # Build script (macOS/Linux)
-├── build.bat                         # Build script (Windows)
-└── [Output files - generated at runtime]
-    ├── roc_curve.csv
-    ├── score_distributions.csv
-    ├── rank_distribution.csv
-    ├── tar_at_far.csv
-    └── evaluation_metrics.txt
+├── main.cpp                    # Core evaluation engine (615 lines)
+├── visualize_metrics.cpp       # ASCII visualization (347 lines)
+├── gui.cpp                     # Qt5 GUI application (350 lines)
+├── CMakeLists.txt              # CMake build config for GUI
+├── build.sh                    # macOS/Linux build script
+├── build.bat                   # Windows build script
+├── README.md                   # This file
+├── QUICKSTART.md               # Quick start guide
+├── GUI_CPP.md                  # GUI detailed documentation
+├── GITHUB_SETUP.md             # GitHub setup instructions
+├── .gitignore                  # Git ignore patterns
+└── output files/
+    ├── roc_curve.csv           # (generated on run)
+    ├── score_distributions.csv # (generated on run)
+    ├── rank_distribution.csv   # (generated on run)
+    ├── tar_at_far.csv          # (generated on run)
+    └── evaluation_metrics.txt   # (generated on run)
 ```
 
 ---
 
-## Configuration
+## Key Capabilities
 
-### Modify Evaluation Parameters
+### Evaluation Workflow
+1. **Generate/Load Templates** - Create or load gallery fingerprint embeddings
+2. **Compute Similarities** - Calculate cosine similarity between probe and gallery
+3. **Rank Candidates** - Sort by matching score for identification
+4. **Compute Metrics** - Calculate accuracy, EER, AUC, TAR@FAR
+5. **Export Results** - Save CSV data and metrics report
 
-Edit `main.cpp` to change:
+### Score Analysis
+- Generate ROC curve by sweeping decision threshold
+- Find operating point with minimum EER
+- Identify optimal threshold for target FAR
+- Analyze score separation between genuine/impostor
 
-**Line ~310:** Number of gallery subjects
-```cpp
-int num_subjects = 100;  // Change this value
-```
+### Output Formats
+- **CSV** - Import to Excel, Python, R, MATLAB
+- **TXT** - Human-readable metrics report
+- **Terminal** - Real-time progress and results
 
-**Line ~324:** Number of probe embeddings
-```cpp
-int total_probes = 100;  // Change this value
-```
+---
 
-**Line ~304:** Embedding dimension
-```cpp
-int embedding_dim = 256;  // Change this value
-```
+## Troubleshooting
 
-**Line ~301:** Random seed (for reproducibility)
-```cpp
-std::mt19937 gen(42);  // Change seed value
-```
+### Build Fails: OpenCV Not Found
 
-Then recompile:
+**macOS:**
 ```bash
-./build.sh
-./fingerprint_app
+brew install opencv
+pkg-config --cflags --libs opencv4
+```
+
+**Linux:**
+```bash
+sudo apt-get install libopencv-dev
+pkg-config --list-all | grep opencv
+```
+
+### Build Fails: Qt5 Not Found
+
+**macOS:**
+```bash
+brew install qt5
+# Set Qt5 path if needed:
+export Qt5_DIR=/opt/homebrew/opt/qt5/lib/cmake/Qt5
+```
+
+**Linux:**
+```bash
+sudo apt-get install qtbase5-dev qttools5-dev
+
+```
+
+### GUI Won't Start
+
+Ensure Qt5 libraries are installed and visible:
+```bash
+# macOS
+brew link qt5 --force
+
+# Linux
+ldconfig /opt/qt5/lib
 ```
 
 ---
 
-## Metrics Explanation
+## Documentation
 
-### Identification (1:N)
-- **Rank-1**: % of probes correctly matched to their gallery template
-- **Rank-5/10**: % of correct match within top-5/10 results
-
-### Authentication (1:1)
-- **EER**: Threshold where FAR = FRR (lower is better)
-- **AUC**: Area under ROC curve (1.0 = perfect, 0.5 = random)
-- **TAR@FAR**: True Acceptance Rate at specific False Acceptance Rates
-
-### Score Statistics
-- **Genuine Mean/Std**: Distribution of same-person scores
-- **Impostor Mean/Std**: Distribution of different-person scores
-- **Separation**: Difference between genuine and impostor means (higher = better)
-
----
-
-## Example Output
-
-```
-================================================================================
-  FINGERPRINT EMBEDDING EVALUATION (C++ Implementation)
-================================================================================
-
-Generating synthetic embeddings for evaluation...
-Created 100 gallery templates
-Generated 10000 total score pairs
-
---------------------------------------------------------------------------------
-[1] RANK-1 IDENTIFICATION ACCURACY
---------------------------------------------------------------------------------
-Rank-1 Accuracy (R1):  100.0000% (100/100)
-Rank-5 Accuracy (R5):  100.0000% (100/100)
-Rank-10 Accuracy (R10): 100.0000% (100/100)
-
---------------------------------------------------------------------------------
-[2] ROC CURVE & EQUAL ERROR RATE (EER)
---------------------------------------------------------------------------------
-Equal Error Rate (EER):     0.0303%
-EER Threshold:              0.8080
-AUC (Area Under ROC):       1.0000
-
-Genuine  - Mean: 0.9920 | Std: 0.0006
-Impostor - Mean: 0.7412 | Std: 0.0200
-Separation:      0.2508
-
-Exporting results to CSV files...
-
-✓ roc_curve.csv created (1108 points)
-✓ score_distributions.csv created (10000 scores)
-✓ rank_distribution.csv created
-✓ tar_at_far.csv created
-✓ evaluation_metrics.txt created
-```
+| Document | Purpose |
+|----------|---------|
+| [QUICKSTART.md](QUICKSTART.md) | Get started in 2 minutes |
+| [GUI_CPP.md](GUI_CPP.md) | Detailed GUI documentation |
+| [GITHUB_SETUP.md](GITHUB_SETUP.md) | Clone & contribute guide |
 
 ---
 
 ## Performance
 
-- **Evaluation Time**: ~2-5 seconds (100 subjects × 100 probes)
-- **Memory Usage**: ~50 MB (for synthetic data)
-- **Executable Size**: ~60-80 KB
+Typical execution time (test dataset):
+- **CLI Evaluation** - ~5 seconds
+- **Visualization** - ~2 seconds  
+- **GUI Startup** - <1 second
+- **GUI Evaluation** - ~5 seconds
+
+Memory usage: <100 MB
 
 ---
 
-## Compatibility
+## Technical Details
 
-| OS | Compiler | Status |
-|--- |----------|--------|
-| macOS 10.15+ | clang++ | ✅ Tested |
-| Linux (Ubuntu 18.04+) | g++ 7.0+ | ✅ Supported |
-| Windows 10+ | MSVC 2019+ | ✅ Supported |
+### Implementation
+- **Language:** C++17
+- **Compilers:** clang++, g++, MSVC
+- **Libraries:** OpenCV (image processing), Qt5 (GUI)
+- **Optimization:** -O2 flag for performance
 
----
+### Metrics Computation
+- **ROC**: Sweep threshold, compute TPR vs FPR
+- **EER**: Find threshold where FAR = FRR
+- **AUC**: Trapezoidal rule integration
+- **TAR@FAR**: Interpolate ROC curve
 
-## Integration with Real Embeddings
-
-To use with actual fingerprint embeddings:
-
-1. **Load embeddings** from your Python model (HDF5, pickle, or binary format)
-2. **Replace the synthetic data section** (lines ~305-325 in main.cpp)
-3. **Use standard cosine similarity** (already implemented)
-4. **Recompile** and run
-
-Example integration Point:
-```cpp
-// Replace this section with your embedding loading code
-std::map<std::string, std::vector<float>> templates;
-// Load from file: HDF5, pickle, CSV, etc.
-// templates[subject_id] = your_embeddings[subject_id];
-```
-
----
-
-## References
-
-- NIST FRVT (Face Recognition Vendor Test): https://pages.nist.gov/frvt/
-- ISO/IEC 19795-1: Biometric Performance Testing
-- ROC Curves: https://en.wikipedia.org/wiki/Receiver_operating_characteristic
+### Threading
+- GUI uses QThread for non-blocking evaluation
+- Signal/slot architecture for safe communication
+- Prevents UI freeze during long operations
 
 ---
 
 ## License
 
-Open source. Use and modify as needed.
+See LICENSE file for details.
 
 ---
 
 ## Support
 
-**Issues?**
-- Check build script output for compilation errors
-- Ensure OpenCV is installed correctly: `pkg-config --cflags --libs opencv4`
-- Verify C++17 compiler support: `clang++ --version` or `g++ --version`
+For issues or questions:
+1. Check [QUICKSTART.md](QUICKSTART.md)
+2. Review [GUI_CPP.md](GUI_CPP.md) for GUI-specific help
+3. Verify system requirements above
+4. Check error messages in terminal output
 
 ---
 
-## Author
+## Next Steps
 
-Developed for fingerprint biometric evaluation
+1. **Install dependencies** for your platform (see System Requirements)
+2. **Build the project** using `./build.sh` (macOS/Linux) or `build.bat` (Windows)
+3. **Test CLI** with `./fingerprint_app`
+4. **Try GUI** with `./biometric_gui`
+5. See [QUICKSTART.md](QUICKSTART.md) for detailed walkthrough
+
+Good luck! 🎯

@@ -13,6 +13,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QThread>
+#include <QScrollBar>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -31,12 +32,6 @@ public slots:
     void run() {
         QProcess process;
         process.setProcessChannelMode(QProcess::MergedChannels);
-        
-        // Connect to output signals
-        connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                this, [this, &process]() {
-            emit finished(process.exitCode() == 0);
-        });
 
         process.start(m_appPath);
         
@@ -46,24 +41,25 @@ public slots:
             return;
         }
 
-        // Read output in real-time
-        while (process.state() == QProcess::Running) {
-            if (process.canReadLine()) {
-                QString line = QString::fromUtf8(process.readLine()).trimmed();
-                if (!line.isEmpty()) {
-                    emit outputReady(line);
-                }
-            }
-            QThread::msleep(100);
+        // Wait for process to complete (with timeout of 30 seconds)
+        if (!process.waitForFinished(30000)) {
+            process.kill();
+            emit error("Evaluation timed out!");
+            emit finished(false);
+            return;
         }
 
-        // Read remaining output
-        while (process.canReadLine()) {
-            QString line = QString::fromUtf8(process.readLine()).trimmed();
-            if (!line.isEmpty()) {
+        // Read all output after process finishes
+        QString output = QString::fromUtf8(process.readAllStandardOutput());
+        QStringList lines = output.split('\n');
+        
+        for (const QString &line : lines) {
+            if (!line.trimmed().isEmpty()) {
                 emit outputReady(line);
             }
         }
+
+        emit finished(process.exitCode() == 0);
     }
 
 signals:

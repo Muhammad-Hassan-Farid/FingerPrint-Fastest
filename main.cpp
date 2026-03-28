@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <numeric>
 #include <opencv2/opencv.hpp>
-#include "OpenAFIS.h"
 
 namespace fs = std::filesystem;
 
